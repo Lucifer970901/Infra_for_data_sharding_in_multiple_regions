@@ -1,6 +1,7 @@
 
 resource "oci_core_vcn" "test_vcn" {
     #Required
+    provider       = oci.home
     cidr_block = var.vcn_cidr_block
     compartment_id = oci_identity_compartment.asset_compartment.id
     display_name = var.display_name_vcn
@@ -9,6 +10,7 @@ resource "oci_core_vcn" "test_vcn" {
 
 #resource block for defining public subnet
 resource "oci_core_subnet" "publicsubnet"{
+provider       = oci.home
 dns_label = "PublicSubnet"
 compartment_id = oci_identity_compartment.asset_compartment.id
 vcn_id = oci_core_vcn.test_vcn.id
@@ -19,6 +21,7 @@ security_list_ids = [oci_core_security_list.publicSL.id]
 }
 
 resource "oci_core_subnet" "privatesubnet"{
+provider       = oci.home
 dns_label = "PrivateSubnet"
 compartment_id = oci_identity_compartment.asset_compartment.id
 vcn_id = oci_core_vcn.test_vcn.id
@@ -31,19 +34,22 @@ security_list_ids = [oci_core_security_list.privateSL.id]
 
 #resource block for internet gateway
 resource "oci_core_internet_gateway" "test_internet_gateway" {
+  provider       = oci.home
   compartment_id = oci_identity_compartment.asset_compartment.id
   vcn_id         = oci_core_vcn.test_vcn.id
 }
 
 resource "oci_core_nat_gateway" "test_nat_gateway" {
     #Required
+    provider       = oci.home
     compartment_id =oci_identity_compartment.asset_compartment.id
     vcn_id = oci_core_vcn.test_vcn.id
 }
 
 #resource block for route table with route rule for internet gateway
 resource "oci_core_route_table" "publicRT" {
-  vcn_id = oci_core_vcn.test_vcn.id
+provider       = oci.home
+vcn_id = oci_core_vcn.test_vcn.id
 compartment_id = oci_identity_compartment.asset_compartment.id
 display_name = "public_route_table"
   route_rules {
@@ -53,6 +59,7 @@ display_name = "public_route_table"
 }
 # #resource block for private route table 
 resource "oci_core_route_table" "privateRT"{
+provider       = oci.home
 compartment_id = oci_identity_compartment.asset_compartment.id
 vcn_id = oci_core_vcn.test_vcn.id
 display_name = "private_route_table"
@@ -69,6 +76,7 @@ route_rules {
 
 #resource block for public security list
 resource "oci_core_security_list" "publicSL" {
+  provider       = oci.home
   compartment_id = oci_identity_compartment.asset_compartment.id
   vcn_id         = oci_core_vcn.test_vcn.id
   display_name   = "public_security_list"
@@ -105,6 +113,7 @@ resource "oci_core_security_list" "publicSL" {
   }
 }
 resource "oci_core_security_list" "privateSL" {
+  provider       = oci.home
   compartment_id = oci_identity_compartment.asset_compartment.id
   vcn_id         = oci_core_vcn.test_vcn.id
   display_name   = "private_security_list"
