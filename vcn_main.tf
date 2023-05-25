@@ -3,7 +3,7 @@ resource "oci_core_vcn" "test_vcn" {
     #Required
     provider       = oci.home
     cidr_block = var.vcn_cidr_block
-    compartment_id = oci_identity_compartment.asset_compartment.id
+    compartment_id = var.compartment_ocid
     display_name = var.display_name_vcn
     dns_label = var.vcn_dns_label
 }
@@ -12,7 +12,7 @@ resource "oci_core_vcn" "test_vcn" {
 resource "oci_core_subnet" "publicsubnet"{
 provider       = oci.home
 dns_label = "PublicSubnet"
-compartment_id = oci_identity_compartment.asset_compartment.id
+compartment_id = var.compartment_ocid
 vcn_id = oci_core_vcn.test_vcn.id
 display_name = var.display_name_publicsubnet
 cidr_block = var.cidr_block_publicsubnet
@@ -23,7 +23,7 @@ security_list_ids = [oci_core_security_list.publicSL.id]
 resource "oci_core_subnet" "privatesubnet"{
 provider       = oci.home
 dns_label = "PrivateSubnet"
-compartment_id = oci_identity_compartment.asset_compartment.id
+compartment_id = var.compartment_ocid
 vcn_id = oci_core_vcn.test_vcn.id
 display_name = var.display_name_privatesubnet
 cidr_block = var.cidr_block_privatesubnet
@@ -35,14 +35,14 @@ security_list_ids = [oci_core_security_list.privateSL.id]
 #resource block for internet gateway
 resource "oci_core_internet_gateway" "test_internet_gateway" {
   provider       = oci.home
-  compartment_id = oci_identity_compartment.asset_compartment.id
+  compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.test_vcn.id
 }
 
 resource "oci_core_nat_gateway" "test_nat_gateway" {
     #Required
     provider       = oci.home
-    compartment_id =oci_identity_compartment.asset_compartment.id
+    compartment_id =var.compartment_ocid
     vcn_id = oci_core_vcn.test_vcn.id
 }
 
@@ -50,7 +50,7 @@ resource "oci_core_nat_gateway" "test_nat_gateway" {
 resource "oci_core_route_table" "publicRT" {
 provider       = oci.home
 vcn_id = oci_core_vcn.test_vcn.id
-compartment_id = oci_identity_compartment.asset_compartment.id
+compartment_id = var.compartment_ocid
 display_name = "public_route_table"
   route_rules {
     destination       = "0.0.0.0/0"
@@ -60,7 +60,7 @@ display_name = "public_route_table"
 # #resource block for private route table 
 resource "oci_core_route_table" "privateRT"{
 provider       = oci.home
-compartment_id = oci_identity_compartment.asset_compartment.id
+compartment_id = var.compartment_ocid
 vcn_id = oci_core_vcn.test_vcn.id
 display_name = "private_route_table"
 route_rules {
@@ -77,7 +77,7 @@ route_rules {
 #resource block for public security list
 resource "oci_core_security_list" "publicSL" {
   provider       = oci.home
-  compartment_id = oci_identity_compartment.asset_compartment.id
+  compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.test_vcn.id
   display_name   = "public_security_list"
 
@@ -114,7 +114,7 @@ resource "oci_core_security_list" "publicSL" {
 }
 resource "oci_core_security_list" "privateSL" {
   provider       = oci.home
-  compartment_id = oci_identity_compartment.asset_compartment.id
+  compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.test_vcn.id
   display_name   = "private_security_list"
 
