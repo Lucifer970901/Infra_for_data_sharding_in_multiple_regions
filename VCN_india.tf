@@ -45,6 +45,25 @@ resource "oci_core_nat_gateway" "test_nat_gateway" {
     vcn_id = oci_core_vcn.test_vcn.id
 }
 
+resource "oci_core_drg" "test_drg" {
+    #Required
+    provider       = oci.region1
+    compartment_id = var.compartment_ocid
+}
+
+resource "oci_core_drg_attachment" "test_drg_attachment" {
+    #Required
+    drg_id = oci_core_drg.test_drg.id
+    network_details {
+        #Required
+        id = var.drg_attachment_network_details_id
+        type = var.drg_attachment_network_details_type
+    }
+    route_table_id = oci_core_route_table.privateRT.id
+    vcn_id = oci_core_vcn.test_vcn.id
+}
+
+
 #resource block for route table with route rule for internet gateway
 resource "oci_core_route_table" "publicRT" {
 provider       = oci.region1
@@ -66,10 +85,11 @@ route_rules {
     destination       = "0.0.0.0/0"
     network_entity_id = oci_core_nat_gateway.test_nat_gateway.id
   }
-#route_rules {
- #   destination       = "0.0.0.0/0"
-  #  network_entity_id = oci_core_service_gateway.test_service_gateway.id
-  #}
+ 
+route_rules {
+    destination       = "0.0.0.0/0"
+    network_entity_id = oci_core_drg.test_drg.id
+  }
 }
 
 
@@ -131,6 +151,25 @@ resource "oci_core_security_list" "privateSL" {
     source   = "172.0.0.0/16"
   }
   
+     ingress_security_rules {
+    tcp_options {
+      max = "all"
+      min = "all"
+    }
+
+    protocol = "6"
+    source   = "10.0.0.0/16"
+  }
+    
+     ingress_security_rules {
+    tcp_options {
+      max = "22"
+      min = "22"
+    }
+
+    protocol = "6"
+    source   = "172.0.0.0/16"
+  }
   ingress_security_rules {
     tcp_options {
       max = "1521"
