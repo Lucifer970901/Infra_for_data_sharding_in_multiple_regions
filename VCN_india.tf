@@ -53,6 +53,7 @@ resource "oci_core_drg" "test_drg" {
 
 resource "oci_core_drg_attachment" "test_drg_attachment" {
     #Required
+    provider       = oci.region1
     drg_id = oci_core_drg.test_drg.id
     network_details {
         #Required
@@ -64,7 +65,7 @@ resource "oci_core_drg_attachment" "test_drg_attachment" {
 }
 
 
-#resource block for route table with route rule for internet gateway
+#resource block for public  route table with route rule 
 resource "oci_core_route_table" "publicRT" {
 provider       = oci.region1
 vcn_id = oci_core_vcn.test_vcn.id
@@ -74,7 +75,12 @@ display_name = "public_route_table"
     destination       = "0.0.0.0/0"
     network_entity_id = oci_core_internet_gateway.test_internet_gateway.id
   }
+  route_rules {
+    destination       = "0.0.0.0/0"
+    network_entity_id = oci_core_drg.test_drg.id
+  }
 }
+
 # #resource block for private route table 
 resource "oci_core_route_table" "privateRT"{
 provider       = oci.region1
@@ -103,6 +109,16 @@ resource "oci_core_security_list" "publicSL" {
   egress_security_rules {
     protocol    = "all"
     destination = "0.0.0.0/0"
+  }
+    
+   ingress_security_rules {
+    protocol = "6"
+    source   = "10.0.0.0/16"
+  }
+    
+  ingress_security_rules {
+    protocol = "6"
+    source   = "192.168.0.0/16"
   }
   ingress_security_rules {
     tcp_options {
@@ -141,6 +157,7 @@ resource "oci_core_security_list" "privateSL" {
     protocol    = "all"
     destination = "0.0.0.0/0"
   }
+    
   ingress_security_rules {
     tcp_options {
       max = "22"
@@ -150,15 +167,15 @@ resource "oci_core_security_list" "privateSL" {
     protocol = "6"
     source   = "172.0.0.0/16"
   }
-  
-     ingress_security_rules {
-    tcp_options {
-      max = "all"
-      min = "all"
-    }
-
+  #for remote peering connections
+  ingress_security_rules {
     protocol = "6"
     source   = "10.0.0.0/16"
+  }
+    
+  ingress_security_rules {
+    protocol = "6"
+    source   = "192.168.0.0/16"
   }
     
      ingress_security_rules {
@@ -196,6 +213,16 @@ resource "oci_core_security_list" "privateSL" {
 
     protocol = "1"
     source   = "0.0.0.0/0"
-  }
-  
+  } 
+}
+
+resource "oci_core_remote_peering_connection" "test_remote_peering_connection" {
+    #Required
+    provider       = oci.region1
+    compartment_id = var.compartment_ocid
+    drg_id = oci_core_drg.test_drg.id
+
+    #Optional
+    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection2.id
+    peer_region_name = var.remote_peering_connection_peer_region_name
 }
