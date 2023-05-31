@@ -45,7 +45,7 @@ resource "oci_core_nat_gateway" "test_nat_gateway_mumbai" {
     vcn_id = oci_core_vcn.test_vcn_mumbai.id
 }
 
-resource "oci_core_drg" "test_drg" {
+resource "oci_core_drg" "test_drg_mumbai" {
     #Required
     provider       = oci.region1
     compartment_id = var.compartment_ocid
