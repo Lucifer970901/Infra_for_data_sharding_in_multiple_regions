@@ -46,6 +46,37 @@ resource "oci_core_nat_gateway" "test_nat_gateway" {
     vcn_id = oci_core_vcn.test_vcn.id
 }
 
+resource "oci_core_drg" "test_drg" {
+    #Required
+    provider       = oci.home
+    compartment_id = var.compartment_ocid
+}
+
+resource "oci_core_drg_attachment" "test_drg_vcn_attachment" {
+    #Required
+    provider       = oci.home
+    drg_id = oci_core_drg.test_drg.id
+    network_details {
+        #Required
+        id = oci_core_vcn.test_vcn.id
+        type = "VCN"
+        route_table_id = oci_core_route_table.privateRT.id
+    }
+}
+
+resource "oci_core_drg_attachment" "test_drg_rpc_attachment" {
+    #Required
+    provider       = oci.home
+    drg_id = oci_core_drg.test_drg.id
+    network_details {
+        #Required
+        id = oci_core_vcn.test_vcn.id
+        type = "REMOTE_PEERING_CONNECTION"
+        route_table_id = oci_core_route_table.privateRT.id
+    }
+}
+
+
 #resource block for route table with route rule for internet gateway
 resource "oci_core_route_table" "publicRT" {
 provider       = oci.home
