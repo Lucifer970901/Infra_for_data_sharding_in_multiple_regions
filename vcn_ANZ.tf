@@ -73,7 +73,7 @@ resource "oci_core_remote_peering_connection" "test_remote_peering_connection_an
     peer_region_name = "ap-mumbai-1"
 }
 
-resource "oci_core_remote_peering_connection" "test_remote_peering_connection_anz" {
+resource "oci_core_remote_peering_connection" "test_remote_peering_connection_anz1" {
     #Required
     provider       = oci.region2
     compartment_id = var.compartment_id
