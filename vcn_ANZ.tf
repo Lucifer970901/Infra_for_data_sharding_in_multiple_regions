@@ -4,7 +4,7 @@ resource "oci_core_vcn" "test_vcn_anz" {
     cidr_block = var.vcn_cidr_block
     compartment_id = var.compartment_ocid
     display_name = var.display_name_vcn
-    dns_label = var.vcn_dns_label
+    dns_label = "vcn3"
 }
 
 #resource block for defining public subnet
