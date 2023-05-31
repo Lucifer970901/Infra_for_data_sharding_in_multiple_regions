@@ -69,10 +69,20 @@ resource "oci_core_remote_peering_connection" "test_remote_peering_connection_an
     drg_id = oci_core_drg.test_drg_anz.id
 
     #Optional
-    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection2.id
-    peer_region_name = var.remote_peering_connection_peer_region_name
+    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection_mumbai.id
+    peer_region_name = "ap-mumbai-1"
 }
 
+resource "oci_core_remote_peering_connection" "test_remote_peering_connection_anz" {
+    #Required
+    provider       = oci.region2
+    compartment_id = var.compartment_id
+    drg_id = oci_core_drg.test_drg_anz.id
+
+    #Optional
+    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection.id
+    peer_region_name = "ap-singapore-1"
+}
 resource "oci_core_drg_attachment" "test_drg_rpc_attachment_anz" {
     #Required
     provider       = oci.region2
