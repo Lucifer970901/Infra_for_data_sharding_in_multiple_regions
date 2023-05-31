@@ -70,8 +70,19 @@ resource "oci_core_remote_peering_connection" "test_remote_peering_connection_mu
     drg_id = oci_core_drg.test_drg_mumbai.id
 
     #Optional
-    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection2.id
-    peer_region_name = var.remote_peering_connection_peer_region_name
+    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection_anz.id
+    peer_region_name = "ap-sydney-1"
+}
+
+resource "oci_core_remote_peering_connection" "test_remote_peering_connection_mumbai1" {
+    #Required
+    provider       = oci.region1
+    compartment_id = var.compartment_ocid
+    drg_id = oci_core_drg.test_drg_mumbai.id
+
+    #Optional
+    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection.id
+    peer_region_name = "ap-singapore-1"
 }
 
 resource "oci_core_drg_attachment" "test_drg_rpc_attachment_mumbai" {
