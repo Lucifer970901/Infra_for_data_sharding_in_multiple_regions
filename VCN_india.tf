@@ -63,18 +63,6 @@ resource "oci_core_drg_attachment" "test_drg_vcn_attachment_mumbai" {
     }
 }
 
-resource "oci_core_drg_attachment" "test_drg_rpc_attachment_mumbai" {
-    #Required
-    provider       = oci.region1
-    drg_id = oci_core_drg.test_drg_mumbai.id
-    network_details {
-        #Required
-        id = oci_core_vcn.test_vcn_mumbai.id
-        type = "REMOTE_PEERING_CONNECTION"
-        route_table_id = oci_core_route_table.privateRT_mumbai.id
-    }
-}
-
 resource "oci_core_remote_peering_connection" "test_remote_peering_connection_mumbai" {
     #Required
     provider       = oci.region1
@@ -85,6 +73,19 @@ resource "oci_core_remote_peering_connection" "test_remote_peering_connection_mu
     peer_id = oci_core_remote_peering_connection.test_remote_peering_connection2.id
     peer_region_name = var.remote_peering_connection_peer_region_name
 }
+
+resource "oci_core_drg_attachment" "test_drg_rpc_attachment_mumbai" {
+    #Required
+    provider       = oci.region1
+    drg_id = oci_core_drg.test_drg_mumbai.id
+    network_details {
+        #Required
+        id = oci_core_remote_peering_connection.test_remote_peering_connection_mumbai.id
+        type = "REMOTE_PEERING_CONNECTION"
+        route_table_id = oci_core_route_table.privateRT_mumbai.id
+    }
+}
+
 
 #resource block for public  route table with route rule 
 resource "oci_core_route_table" "publicRT_mumbai" {
