@@ -62,27 +62,18 @@ resource "oci_core_drg_attachment" "test_drg_vcn_attachment" {
         route_table_id = oci_core_route_table.privateRT.id
     }
 }
-resource "oci_core_remote_peering_connection" "test_remote_peering_connection" {
-    #Required
-    provider       = oci.region1
-    compartment_id = var.compartment_id
-    drg_id = oci_core_drg.test_drg.id
 
-    #Optional
-    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection2.id
-    peer_region_name = var.remote_peering_connection_peer_region_name
-}
-
-resource "oci_core_drg_attachment" "test_drg_vcn_attachment" {
+resource "oci_core_drg_attachment" "test_drg_rpc_attachment" {
     #Required
     provider       = oci.region1
     drg_id = oci_core_drg.test_drg.id
     network_details {
         #Required
         id = oci_core_vcn.test_vcn.id
-        type = "VCN"
+        type = "REMOTE_PEERING_CONNECTION"
         route_table_id = oci_core_route_table.privateRT.id
     }
+}
 }
 
 #resource block for public  route table with route rule 
