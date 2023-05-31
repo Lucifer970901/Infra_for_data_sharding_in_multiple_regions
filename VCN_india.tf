@@ -1,10 +1,10 @@
 resource "oci_core_vcn" "test_vcn_mumbai" {
     #Required
     provider       = oci.region1
-    cidr_block = var.vcn_cidr_block
+    cidr_block = var.vcn_cidr_block_mumbai
     compartment_id = var.compartment_ocid
-    display_name = var.display_name_vcn
-    dns_label = var.vcn_dns_label
+    display_name = var.display_name_vcn_mumbai
+    dns_label = "vcn1"
 }
 
 #resource block for defining public subnet
@@ -14,7 +14,7 @@ dns_label = "PublicSubnet"
 compartment_id = var.compartment_ocid
 vcn_id = oci_core_vcn.test_vcn_mumbai.id
 display_name = var.display_name_publicsubnet
-cidr_block = var.cidr_block_publicsubnet
+cidr_block = var.cidr_block_publicsubnet_mumbai
 route_table_id = oci_core_route_table.publicRT_mumbai.id
 security_list_ids = [oci_core_security_list.publicSL_mumbai.id]
 }
@@ -25,7 +25,7 @@ dns_label = "PrivateSubnet"
 compartment_id = var.compartment_ocid
 vcn_id = oci_core_vcn.test_vcn_mumbai.id
 display_name = var.display_name_privatesubnet
-cidr_block = var.cidr_block_privatesubnet
+cidr_block = var.cidr_block_privatesubnet_mumbai
 prohibit_public_ip_on_vnic = "true"
 route_table_id = oci_core_route_table.privateRT_mumbai.id
 security_list_ids = [oci_core_security_list.privateSL_mumbai.id]
