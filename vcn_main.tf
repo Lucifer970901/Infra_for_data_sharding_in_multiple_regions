@@ -76,6 +76,27 @@ resource "oci_core_drg_attachment" "test_drg_rpc_attachment" {
     }
 }
 
+resource "oci_core_remote_peering_connection" "test_remote_peering_connection" {
+    #Required
+    provider       = oci.home
+    compartment_id = var.compartment_id
+    drg_id = oci_core_drg.test_drg_anz.id
+
+    #Optional
+    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection_mumbai.id
+    peer_region_name = "ap-mumbai-1"
+}
+
+resource "oci_core_remote_peering_connection" "test_remote_peering_connection1" {
+    #Required
+    provider       = oci.home
+    compartment_id = var.compartment_id
+    drg_id = oci_core_drg.test_drg_anz.id
+
+    #Optional
+    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection.id
+    peer_region_name = "ap-sydney-1"
+}
 
 #resource block for route table with route rule for internet gateway
 resource "oci_core_route_table" "publicRT" {
