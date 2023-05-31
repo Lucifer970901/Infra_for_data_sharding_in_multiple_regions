@@ -32,6 +32,16 @@ variable "display_name_privatesubnet"{
   default = "private_subnet"
 }
 
+variable "cidr_block_publicsubnet_mumbai"{
+  default = "172.0.0.0/24"
+}
+variable "cidr_block_publicsubnet_anz"{
+  default = "192.168.0.0/24"
+}
+variable "cidr_block_publicsubnet"{
+  default = "10.0.0.0/24"
+}
+
 variable "cidr_block_privatesubnet_mumbai"{
   default = "172.0.1.0/24"
 }
