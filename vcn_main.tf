@@ -83,7 +83,7 @@ resource "oci_core_remote_peering_connection" "test_remote_peering_connection" {
     drg_id = oci_core_drg.test_drg_anz.id
 
     #Optional
-    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection_mumbai.id
+    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection_mumbai1.id
     peer_region_name = "ap-mumbai-1"
 }
 
@@ -94,7 +94,7 @@ resource "oci_core_remote_peering_connection" "test_remote_peering_connection1" 
     drg_id = oci_core_drg.test_drg_anz.id
 
     #Optional
-    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection.id
+    peer_id = oci_core_remote_peering_connection.test_remote_peering_connection_anz1.id
     peer_region_name = "ap-sydney-1"
 }
 
