@@ -4,7 +4,7 @@ resource "oci_core_vcn" "test_vcn_mumbai" {
     cidr_block = var.vcn_cidr_block_mumbai
     compartment_id = var.compartment_ocid
     display_name = var.display_name_vcn_mumbai
-    dns_label = "vcn1"
+    dns_label = "vcn2"
 }
 
 #resource block for defining public subnet
