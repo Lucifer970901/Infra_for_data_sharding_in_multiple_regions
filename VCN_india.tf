@@ -74,7 +74,6 @@ resource "oci_core_drg_attachment" "test_drg_rpc_attachment" {
         route_table_id = oci_core_route_table.privateRT.id
     }
 }
-}
 
 #resource block for public  route table with route rule 
 resource "oci_core_route_table" "publicRT" {
