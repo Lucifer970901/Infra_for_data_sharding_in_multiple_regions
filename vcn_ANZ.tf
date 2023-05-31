@@ -79,8 +79,8 @@ resource "oci_core_drg_attachment" "test_drg_rpc_attachment_anz" {
     drg_id = oci_core_drg.test_drg_anz.id
     network_details {
         #Required
-        id = oci_core_vcn.test_vcn_anz.id
-        type = "VCN"
+        id = oci_core_remote_peering_connection.test_remote_peering_connection_anz.id
+        type = "REMOTE_PEERING_CONNECTION"
         route_table_id = oci_core_route_table.privateRT_anz.id
     }
 }
